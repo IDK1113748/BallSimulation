@@ -92,6 +92,14 @@ public:
 #else
 		balls.push_back(Ball(x, y, rand_range(VEL_MIN, VEL_MAX) * cos(angle), rand_range(VEL_MIN, VEL_MAX) * sin(angle), (int)rand_range(RAD_MIN, RAD_MAX)));
 #endif
+		
+		setColor(balls.back());
+	}
+
+	void setColor(Ball& ball)
+	{
+		float t = std::min(std::max(float((ball.vel.mag()-VEL_MIN) / (VEL_MAX-VEL_MIN)), 0.0f), 1.0f);
+		ball.color = olc::PixelF(t, 0.0f, 1.0f - t);
 	}
 
 	void init()
@@ -209,6 +217,9 @@ public:
 
 				balls[col.first].vel  = v1nPrime * un + v1t * ut;
 				balls[col.second].vel = v2nPrime * un + v2t * ut;
+
+				setColor(balls[col.first]);
+				setColor(balls[col.second]);
 
 				float overlap = balls[col.first].rad + balls[col.second].rad - dist;
 
